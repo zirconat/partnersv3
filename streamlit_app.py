@@ -170,49 +170,55 @@ sorted_list = sorted(filtered_list, key=lambda x: (x.get('country','zzz').lower(
 # --- 8. MAIN DASHBOARD ---
 st.title("📇 Integrated Contact Dashboard")
 
-# 8.1 FULLY EMBEDDED BIRTHDAY HERO
+# 8.1 FULLY INTEGRATED BIRTHDAY HERO
 now = get_sg_time()
 upcoming_months = [(now.month + i - 1) % 12 + 1 for i in range(3)]
 bday_pool = [c for c in st.session_state.contacts_db if c.get('birthdate') and c['birthdate'].month in upcoming_months]
 
-# Outer wrapper to create the unified "Banner" look
+# Using a container with custom CSS to wrap everything in one amber "bubble"
 with st.container():
-    # 1. The Banner Header (Integrated into the top of the box)
+    # Apply custom background and border to the whole block
     st.markdown("""
-        <div style="background-color: #FFF4E5; padding: 20px 20px 5px 20px; border-radius: 15px 15px 0 0; border-left: 8px solid #FF9800; border-top: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
-            <h2 style="margin: 0; color: #E65100; font-size: 1.5rem;">🎊 Birthday Spotlight</h2>
-            <p style="margin: 0; color: #EF6C00; font-size: 0.9rem;">Upcoming celebrations for the next 3 months</p>
+        <style>
+            [data-testid="stVerticalBlock"] > div:has(div.birthday-hero) {
+                background-color: #FFF4E5;
+                padding: 25px;
+                border-radius: 15px;
+                border-left: 8px solid #FF9800;
+                border-top: 1px solid #FFE0B2;
+                border-right: 1px solid #FFE0B2;
+                border-bottom: 1px solid #FFE0B2;
+            }
+        </style>
+        <div class="birthday-hero">
+            <h2 style="margin: 0; color: #E65100; font-size: 1.6rem; font-family: sans-serif;">🎊 Birthday Spotlight</h2>
+            <p style="margin: 0; color: #EF6C00; font-size: 0.95rem; margin-bottom: 20px;">Upcoming celebrations for the next 3 months</p>
         </div>
     """, unsafe_allow_html=True)
 
-    # 2. The Integrated Body (The columns live inside this colored div)
-    # We use a second markdown to close the box with the columns inside
-    with st.container(border=False):
-        st.markdown("""
-            <div style="background-color: #FFF4E5; padding: 0px 20px 20px 20px; border-radius: 0 0 15px 15px; border-left: 8px solid #FF9800; border-bottom: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
-        """, unsafe_allow_html=True)
-        
-        if bday_pool:
-            m_cols = st.columns(3)
-            for i, m in enumerate(upcoming_months):
-                m_name = datetime(2000, m, 1).strftime('%B')
-                m_bdays = [b for b in bday_pool if b['birthdate'].month == m]
+    if bday_pool:
+        m_cols = st.columns(3)
+        for i, m in enumerate(upcoming_months):
+            m_name = datetime(2000, m, 1).strftime('%B')
+            m_bdays = [b for b in bday_pool if b['birthdate'].month == m]
+            
+            with m_cols[i]:
+                # Month Header within the amber space
+                st.markdown(f"<p style='font-weight: bold; color: #E65100; border-bottom: 2px solid #FFB74D; margin-bottom: 12px;'>{m_name}</p>", unsafe_allow_html=True)
                 
-                with m_cols[i]:
-                    # Transparent month containers to show the banner color underneath
-                    st.markdown(f"<p style='font-weight: bold; color: #E65100; border-bottom: 1px solid #FFB74D; margin-bottom: 10px;'>{m_name}</p>", unsafe_allow_html=True)
-                    if m_bdays:
-                        for p in m_bdays:
-                            st.markdown(f"""
-                                <div style="padding: 8px; border-radius: 8px; background-color: white; border: 1px solid #FFE0B2; margin-bottom: 8px; box-shadow: 1px 1px 2px rgba(0,0,0,0.03);">
-                                    <div style="font-weight: 600; color: #422006; font-size: 0.9rem;">{p['name']}</div>
-                                    <div style="color: #B45309; font-size: 0.75rem;">🎁 {p['birthdate'].strftime('%d %b')}</div>
-                                </div>
-                            """, unsafe_allow_html=True)
-                    else:
-                        st.markdown("<p style='color: #EF6C00; font-style: italic; font-size: 0.8rem; opacity: 0.6;'>None scheduled</p>", unsafe_allow_html=True)
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+                if m_bdays:
+                    for p in m_bdays:
+                        # Individual White Cards
+                        st.markdown(f"""
+                            <div style="padding: 10px; border-radius: 8px; background-color: white; border: 1px solid #FFE0B2; margin-bottom: 8px; box-shadow: 1px 1px 3px rgba(0,0,0,0.05);">
+                                <div style="font-weight: 600; color: #422006; font-size: 0.95rem;">{p['name']}</div>
+                                <div style="color: #B45309; font-size: 0.8rem;">🎁 {p['birthdate'].strftime('%d %b')}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
+                else:
+                    st.markdown("<p style='color: #EF6C00; font-style: italic; font-size: 0.85rem; opacity: 0.6;'>None scheduled</p>", unsafe_allow_html=True)
+    else:
+        st.info("No upcoming birthdays found.")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
