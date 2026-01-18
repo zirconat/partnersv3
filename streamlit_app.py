@@ -176,16 +176,23 @@ upcoming_months = [(now.month + i - 1) % 12 + 1 for i in range(3)]
 bday_pool = [c for c in st.session_state.contacts_db if c.get('birthdate') and c['birthdate'].month in upcoming_months]
 
 if bday_pool:
+    # 'expanded=True' makes it open by default
     with st.expander("🎂 Birthday Spotlight (Next 3 Months)", expanded=True):
-        for m in upcoming_months:
+        # Create 3 columns for the 3 months
+        m_cols = st.columns(3)
+        
+        for i, m in enumerate(upcoming_months):
             m_name = datetime(2000, m, 1).strftime('%B')
             m_bdays = [b for b in bday_pool if b['birthdate'].month == m]
-            if m_bdays:
-                st.markdown(f"**{m_name}**")
-                cols = st.columns(6)
-                for idx, p in enumerate(m_bdays):
-                    with cols[idx % 6]:
-                        st.info(f"**{p['name']}**\n\n({p['birthdate'].strftime('%d %b')})")
+            
+            with m_cols[i]:
+                st.markdown(f"#### {m_name}")
+                if m_bdays:
+                    for p in m_bdays:
+                        # Using a clean info box for each person
+                        st.info(f"**{p['name']}** \n{p['birthdate'].strftime('%d %b')}")
+                else:
+                    st.caption("No birthdays this month")
 
 # 8.2 HIERARCHY TREE
 with st.expander("🌳 Multi-Company Reporting Hierarchy"):
