@@ -41,7 +41,7 @@ if 'contacts_db' not in st.session_state:
             "id": 1, "name": "Lim Boon Hock", "birthdate": date(1960, 1, 5), "company": "Global Corp Group",
             "appointment": "Group Chairman", "country": "Singapore", "mobile": "+65 9000 1111", "office": "+65 6111 2222",
             "email": "bh.lim@globalcorp.com", "address": "1 Marina Boulevard, Singapore", "hobbies": "Wine Tasting",
-            "dietary": "Halal", "receptions": ["NYR", "Gala"], "festivities": ["Chinese New Year"], "assumed_date": date(2010, 5, 1),
+            "dietary": "Halal", "receptions": ["NYR"], "festivities": ["Chinese New Year"], "assumed_date": date(2010, 5, 1),
             "retire_date": None, "marital_status": "Married", "spouse": "Siti Aminah", "children": "3",
             "reporting_to": None, "vehicle_reg": "S1K", "golf": "Yes", "handicap": "12", "status": "Active",
             "category": "Chief", "tier": "A", "photo": "https://www.w3schools.com/howto/img_avatar2.png",
