@@ -77,7 +77,7 @@ STATUS_OPTIONS = ["Active", "Inactive"]
 COUNTRIES = ["Singapore", "Malaysia", "USA", "UK", "Australia", "Japan", "China", "India"]
 TIERS = ["A", "B", "C", "D"]
 FESTIVITIES = ["Chinese New Year", "Hari Raya", "Deepavali", "Christmas", "National Day"]
-RECEPTIONS = ["ALSE", "NYR", "BigShow", "Gala Dinner", "National Day"]
+RECEPTIONS = ["ALSE", "NYR", "BigShow", "National Day"]
 MARITAL_STATUSES = ["Single", "Married", "Divorced", "Widowed"]
 
 # --- 5. AUTHENTICATION ---
