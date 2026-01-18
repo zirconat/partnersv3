@@ -170,29 +170,46 @@ sorted_list = sorted(filtered_list, key=lambda x: (x.get('country','zzz').lower(
 # --- 8. MAIN DASHBOARD ---
 st.title("📇 Integrated Contact Dashboard")
 
-# 8.1 BIRTHDAY SPOTLIGHT (Current + Next 2 Months)
+# 8.1 BIRTHDAY SPOTLIGHT (Fixed Container)
 now = get_sg_time()
 upcoming_months = [(now.month + i - 1) % 12 + 1 for i in range(3)]
 bday_pool = [c for c in st.session_state.contacts_db if c.get('birthdate') and c['birthdate'].month in upcoming_months]
 
+# Styling the header with a colored background to grab attention
+st.markdown("""
+    <div style="background-color: #FFF4E5; padding: 15px; border-radius: 10px; border-left: 5px solid #FF9800; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #E65100; font-size: 1.5rem;">🎊 Birthday Spotlight</h2>
+        <p style="margin: 0; color: #EF6C00; font-size: 0.9rem;">Don't forget to send your well-wishes for the upcoming months!</p>
+    </div>
+""", unsafe_allow_html=True)
+
 if bday_pool:
-    # 'expanded=True' makes it open by default
-    with st.expander("🎂 Birthday Spotlight (Next 3 Months)", expanded=True):
-        # Create 3 columns for the 3 months
+    with st.container(border=True):
         m_cols = st.columns(3)
-        
         for i, m in enumerate(upcoming_months):
             m_name = datetime(2000, m, 1).strftime('%B')
             m_bdays = [b for b in bday_pool if b['birthdate'].month == m]
             
             with m_cols[i]:
-                st.markdown(f"#### {m_name}")
+                # Visual grouping for each month
+                st.markdown(f"<h4 style='text-align: center; color: #1E3A8A;'>{m_name}</h4>", unsafe_allow_html=True)
+                
                 if m_bdays:
                     for p in m_bdays:
-                        # Using a clean info box for each person
-                        st.info(f"**{p['name']}** \n{p['birthdate'].strftime('%d %b')}")
+                        # Individual card for each birthday person
+                        with st.container(border=True):
+                            st.markdown(f"""
+                                <div style="text-align: center;">
+                                    <div style="font-size: 1.1rem; font-weight: bold; color: #1F2937;">{p['name']}</div>
+                                    <div style="color: #6B7280; font-size: 0.85rem;">🎁 {p['birthdate'].strftime('%d %b')}</div>
+                                </div>
+                            """, unsafe_allow_html=True)
                 else:
-                    st.caption("No birthdays this month")
+                    st.markdown("<p style='text-align: center; color: #9CA3AF; font-style: italic; font-size: 0.8rem;'>No birthdays</p>", unsafe_allow_html=True)
+else:
+    st.info("No birthdays approaching in the next 3 months.")
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # 8.2 HIERARCHY TREE
 with st.expander("🌳 Multi-Company Reporting Hierarchy"):
