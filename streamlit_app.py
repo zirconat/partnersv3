@@ -179,7 +179,7 @@ bday_pool = [c for c in st.session_state.contacts_db if c.get('birthdate') and c
 with st.container():
     # 1. The Banner Header (Integrated into the top of the box)
     st.markdown("""
-        <div style="background-color: #FFF4E5; padding: 2px 2px 2px 20px; border-radius: 15px 15px 0 0; border-left: 8px solid #FF9800; border-top: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
+        <div style="background-color: #FFF4E5; padding: 2px 2px 2px 2px; border-radius: 15px 15px 0 0; border-left: 8px solid #FF9800; border-top: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
             <h2 style="margin: 0; color: #E65100; font-size: 1.5rem;">🎊 Birthday Spotlight</h2>
             <p style="margin: 0; color: #EF6C00; font-size: 0.9rem;">Don't forget to send your well-wishes for the upcoming birthdays!</p>
         </div>
