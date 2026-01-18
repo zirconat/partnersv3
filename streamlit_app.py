@@ -170,44 +170,43 @@ sorted_list = sorted(filtered_list, key=lambda x: (x.get('country','zzz').lower(
 # --- 8. MAIN DASHBOARD ---
 st.title("📇 Integrated Contact Dashboard")
 
-# 8.1 BIRTHDAY SPOTLIGHT (Fixed Container)
+# 8.1 UNIFIED BIRTHDAY SPOTLIGHT
 now = get_sg_time()
 upcoming_months = [(now.month + i - 1) % 12 + 1 for i in range(3)]
 bday_pool = [c for c in st.session_state.contacts_db if c.get('birthdate') and c['birthdate'].month in upcoming_months]
 
-# Styling the header with a colored background to grab attention
-st.markdown("""
-    <div style="background-color: #FFF4E5; padding: 15px; border-radius: 10px; border-left: 5px solid #FF9800; margin-bottom: 20px;">
-        <h2 style="margin: 0; color: #E65100; font-size: 1.5rem;">🎊 Birthday Spotlight</h2>
-        <p style="margin: 0; color: #EF6C00; font-size: 0.9rem;">Don't forget to send your well-wishes for the upcoming months!</p>
-    </div>
-""", unsafe_allow_html=True)
+with st.container(border=True):
+    # 1. Unified Header and Subtitle
+    st.markdown("""
+        <div style="background-color: #1E3A8A; padding: 12px; border-radius: 5px; margin-bottom: 20px;">
+            <h3 style="margin: 0; color: white; font-size: 1.2rem;">🎊 Birthday Spotlight</h3>
+            <p style="margin: 0; color: #BFDBFE; font-size: 0.85rem;">Upcoming celebrations for the next 3 months</p>
+        </div>
+    """, unsafe_allow_html=True)
 
-if bday_pool:
-    with st.container(border=True):
+    if bday_pool:
         m_cols = st.columns(3)
         for i, m in enumerate(upcoming_months):
             m_name = datetime(2000, m, 1).strftime('%B')
             m_bdays = [b for b in bday_pool if b['birthdate'].month == m]
             
             with m_cols[i]:
-                # Visual grouping for each month
-                st.markdown(f"<h4 style='text-align: center; color: #1E3A8A;'>{m_name}</h4>", unsafe_allow_html=True)
+                # Subtle month header with underline
+                st.markdown(f"<p style='font-weight: bold; color: #1E3A8A; border-bottom: 1px solid #E5E7EB; margin-bottom: 10px;'>{m_name}</p>", unsafe_allow_html=True)
                 
                 if m_bdays:
                     for p in m_bdays:
-                        # Individual card for each birthday person
-                        with st.container(border=True):
-                            st.markdown(f"""
-                                <div style="text-align: center;">
-                                    <div style="font-size: 1.1rem; font-weight: bold; color: #1F2937;">{p['name']}</div>
-                                    <div style="color: #6B7280; font-size: 0.85rem;">🎁 {p['birthdate'].strftime('%d %b')}</div>
-                                </div>
-                            """, unsafe_allow_html=True)
+                        # Clean, high-density birthday rows
+                        st.markdown(f"""
+                            <div style="padding: 8px; border-radius: 5px; background-color: #F8FAFC; border: 1px solid #F1F5F9; margin-bottom: 8px;">
+                                <div style="font-weight: 600; color: #1E293B; font-size: 0.95rem;">{p['name']}</div>
+                                <div style="color: #64748B; font-size: 0.8rem;">🎁 {p['birthdate'].strftime('%d %b')}</div>
+                            </div>
+                        """, unsafe_allow_html=True)
                 else:
-                    st.markdown("<p style='text-align: center; color: #9CA3AF; font-style: italic; font-size: 0.8rem;'>No birthdays</p>", unsafe_allow_html=True)
-else:
-    st.info("No birthdays approaching in the next 3 months.")
+                    st.caption("None scheduled")
+    else:
+        st.write("No upcoming birthdays found.")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
