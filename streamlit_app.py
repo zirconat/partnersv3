@@ -189,7 +189,7 @@ with st.container():
     # We use a second markdown to close the box with the columns inside
     with st.container(border=False):
         st.markdown("""
-            <div style="background-color: #FFF4E5; padding: 0px 20px 20px 20px; border-radius: 0 0 15px 15px; border-left: 8px solid #FF9800; border-bottom: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
+            <div style="background-color: #FFF4E5; padding: 5px 20px 20px 20px; border-radius: 0 0 15px 15px; border-left: 8px solid #FF9800; border-bottom: 1px solid #FFE0B2; border-right: 1px solid #FFE0B2;">
         """, unsafe_allow_html=True)
         
         if bday_pool:
