@@ -243,7 +243,7 @@ for i, c in enumerate(sorted_list):
     
     if c.get('company') != curr_company:
         curr_company = c.get('company')
-        st.markdown(f"<h3 style='background-color: #F3F4F6; padding: 10px; border-radius: 5px; margin-top: 10px;'>🏢 {curr_company}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='background-color: #F3F4F6; padding: 10px; border-radius: 5px; margin-top: 10px; margin-bottom: 10px;'>🏢 {curr_company}</h3>", unsafe_allow_html=True)
 
     age = calculate_age(c.get('birthdate'))
     bday_str = c.get('birthdate').strftime("%d %b %Y") if c.get('birthdate') else "N/A"
